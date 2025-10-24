@@ -169,6 +169,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f0f2f5',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -190,12 +191,13 @@ const styles = StyleSheet.create({
     padding: 30,
     borderRadius: 20,
     elevation: 5,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
     width: '100%',
     maxWidth: 400,
-    borderWidth: 1,
+    backgroundColor: '#fff',
   },
   label: {
     fontSize: 16,

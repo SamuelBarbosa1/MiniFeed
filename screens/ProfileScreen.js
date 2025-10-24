@@ -10,8 +10,8 @@ const ProfileScreen = ({ navigation }) => {
   const [mediaPosts, setMediaPosts] = useState([]);
   const [stats, setStats] = useState({
     posts: 0,
-    followers: 12,
-    following: 35
+    followers: 0,
+    following: 0
   });
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -300,6 +300,7 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.cameraIcon}>
               <Text style={styles.cameraIconText}>📷</Text>
             </View>
+            <Text style={styles.changePhotoText}>Alterar Foto</Text>
           </TouchableOpacity>
           
           <View style={styles.statsContainer}>
@@ -443,15 +444,7 @@ const ProfileScreen = ({ navigation }) => {
         )}
       </View>
       
-      {/* Profile Actions */}
-      <View style={styles.profileActions}>
-        <TouchableOpacity style={styles.actionItem} onPress={handleAddProfilePhoto}>
-          <Text style={styles.actionText}>📷 Adicionar Foto</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionItem} onPress={handleLogout}>
-          <Text style={styles.actionText}>🚪 Sair</Text>
-        </TouchableOpacity>
-      </View>
+
     </ScrollView>
   );
 };
@@ -482,6 +475,11 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   profileInfo: {
     flexDirection: 'row',
@@ -525,6 +523,13 @@ const styles = StyleSheet.create({
   },
   cameraIconText: {
     fontSize: 16,
+  },
+  changePhotoText: {
+    fontSize: 12,
+    color: '#4285F4',
+    marginTop: 5,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   statsContainer: {
     flex: 1,
@@ -655,6 +660,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
     marginBottom: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    marginHorizontal: 10,
   },
   sectionTitle: {
     fontSize: 20,
@@ -670,20 +682,32 @@ const styles = StyleSheet.create({
     width: '31%',
     aspectRatio: 1,
     marginBottom: 15,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   regularPost: {
     flex: 1,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#f0f2f5',
     borderRadius: 8,
-    padding: 8,
+    padding: 10,
     justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
   },
   mediaPost: {
     flex: 1,
     backgroundColor: '#4285F4',
     borderRadius: 8,
-    padding: 8,
+    padding: 10,
     justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
   },
   postText: {
     fontSize: 12,
@@ -726,22 +750,7 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
   },
-  profileActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'white',
-    paddingVertical: 15,
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-  },
-  actionItem: {
-    alignItems: 'center',
-  },
-  actionText: {
-    fontSize: 16,
-    color: '#4285F4',
-    fontWeight: '600',
-  },
+
 });
 
 export default ProfileScreen;

@@ -10,7 +10,6 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeFeedScreen from './screens/HomeFeedScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import SearchScreen from './screens/SearchScreen';
 import Storage from './utils/Storage';
 
 // Import required components for React Navigation
@@ -69,17 +68,6 @@ function MainTabs() {
             },
             tabBarIcon: ({ color, size }) => (
               <Text style={{ fontSize: size, color }}>📰</Text>
-            ),
-          }}
-        />
-        <Tab.Screen 
-          name="Search" 
-          component={SearchScreen}
-          options={{ 
-            title: 'Buscar',
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <Text style={{ fontSize: size, color }}>🔍</Text>
             ),
           }}
         />

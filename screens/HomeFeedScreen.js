@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Alert, RefreshControl, Modal, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Alert, RefreshControl, Modal, Dimensions, Image } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import * as Clipboard from 'expo-clipboard';
 import Storage from '../utils/Storage';
@@ -24,6 +24,7 @@ const HomeFeedScreen = ({ navigation }) => {
   const [suggestedUsers, setSuggestedUsers] = useState([]);
   const [showUserSuggestions, setShowUserSuggestions] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
   const theme = getTheme(isDarkMode);
 
   useEffect(() => {
@@ -57,6 +58,13 @@ const HomeFeedScreen = ({ navigation }) => {
       const userData = await Storage.getUser();
       if (userData) {
         setUser(userData);
+        // Load profile image if exists
+        const savedProfileImage = await Storage.getProfileImage();
+        if (savedProfileImage) {
+          setProfileImage(savedProfileImage);
+        } else {
+          setProfileImage(null);
+        }
       }
     } catch (error) {
       console.error('Error loading user data:', error);
@@ -66,7 +74,7 @@ const HomeFeedScreen = ({ navigation }) => {
   const loadPosts = async () => {
     try {
       // Get all posts for the feed
-      const feedPosts = await Storage.getFeedPosts();
+      const feedPosts = await Storage.getPosts();
       setPosts(feedPosts);
     } catch (error) {
       console.error('Error loading posts:', error);
@@ -442,9 +450,13 @@ const HomeFeedScreen = ({ navigation }) => {
             {/* Post Creation Section */}
             <View style={[styles.createPostContainer, { backgroundColor: theme.cardBackground, borderBottomColor: theme.border }]}>
               <View style={styles.userInfo}>
-                <View style={[styles.avatarPlaceholder, { backgroundColor: theme.primary }]}>
-                  <Text style={styles.avatarText}>{user ? user.username.charAt(0) : 'U'}</Text>
-                </View>
+                {profileImage ? (
+                  <Image source={{ uri: profileImage }} style={styles.profileImage} />
+                ) : (
+                  <View style={[styles.avatarPlaceholder, { backgroundColor: theme.primary }]}> 
+                    <Text style={styles.avatarText}>{user ? user.username.charAt(0) : 'U'}</Text>
+                  </View>
+                )}
                 <TouchableOpacity 
                   style={[styles.createPostInput, { backgroundColor: theme.buttonSecondary }]}
                   onPress={() => setShowPostInput(true)}
@@ -662,11 +674,19 @@ const styles = StyleSheet.create({
   createPostContainer: {
     padding: 15,
     borderBottomWidth: 1,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   avatarPlaceholder: {
     width: 40,
@@ -674,7 +694,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 12,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 12,
   },
   avatarText: {
     color: 'white',
@@ -684,11 +710,13 @@ const styles = StyleSheet.create({
   createPostInput: {
     flex: 1,
     borderRadius: 20,
-    padding: 10,
+    padding: 12,
     paddingHorizontal: 15,
+    backgroundColor: '#f0f2f5',
   },
   createPostPlaceholder: {
     fontSize: 16,
+    color: '#65676b',
   },
   postInputContainer: {
     marginTop: 10,
@@ -746,8 +774,15 @@ const styles = StyleSheet.create({
   },
   postContainer: {
     padding: 15,
-    marginBottom: 1,
-    borderBottomWidth: 1,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    marginHorizontal: 10,
   },
   postHeader: {
     flexDirection: 'row',
@@ -760,9 +795,11 @@ const styles = StyleSheet.create({
   postUsername: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#050505',
   },
   postTimestamp: {
     fontSize: 12,
+    color: '#65676b',
   },
   postMenuButton: {
     padding: 10,
@@ -779,12 +816,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderTopWidth: 1,
+    borderTopColor: '#e4e6eb',
     paddingTop: 10,
+    marginTop: 10,
   },
   actionButton: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 5,
+    paddingVertical: 8,
+    borderRadius: 6,
   },
   likedButton: {
     // No additional styling needed for the button itself
